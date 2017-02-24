@@ -1,0 +1,42 @@
+{
+    "name":"Encoding Utility",
+    "author":"Joseph lamoree <jlamoree@ecivis.com>",
+    "version":"0.0.1",
+    "slug":"encoding-utility",
+    "type":"modules",
+    "location":"ecivis/encoding-utility",
+    "homepage":"https://github.com/ecivis/encoding-utility",
+    "documentation":"https://github.com/ecivis/encoding-utility",
+    "repository":{
+        "type":"git",
+        "url":"https://github.com/ecivis/encoding-utility"
+    },
+    "shortDescription":"A utility to assist in resolving character encoding issues.",
+    "bugs":"https://github.com/ecivis/encoding-utility/issues",
+    "engines":[
+        {
+            "type":"lucee",
+            "version":">=5.0.0"
+        }
+    ],
+    "license":[
+        {
+            "type":"MIT",
+            "url":""
+        }
+    ],
+    "dependencies":{
+        "testbox":"^2.4.0+80"
+    },
+    "devDependencies":{
+
+    },
+    "ignore":[
+        "**/.*",
+        "tests",
+        "apidocs"
+    ],
+    "installPaths":{
+        "testbox":"testbox"
+    }
+}
