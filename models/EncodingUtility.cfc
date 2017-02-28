@@ -1,7 +1,9 @@
 component {
 
+    processingdirective preservecase=true;
+
     /**
-    * Perhaps in the future, the constructor will accept configuration preferences.
+    * This component is thread-safe; feel free to retain/share one instantiation
     */
     public EncodingUtility function init() {
         return this;
@@ -13,28 +15,47 @@ component {
     */
     public string function substitute(string input) {
         var result = arguments.input;
-        var highBitByteMatcher = getHighBitBytePattern().matcher(result);
+        var nonBasicLatinPattern = createObject("java", "java.util.regex.Pattern").compile("[^\x00-\x7f]");
         var subs = getSubstitutionMap();
         var sub = [];
 
-        // If the input is already 7-bit ASCII, no need to continue
-        if (not highBitByteMatcher.matches()) {
+        // If the input is already Basic Latin, no need to continue
+        if (not nonBasicLatinPattern.matcher(result).find()) {
             return result;
         }
 
-        // First check for any Unicode codepoints
+        // Replace Unicode code points in the substitution map
         for (sub in subs) {
             result = result.replaceAll("\u" & sub[2], sub[3]);
         }
 
-        // Now substitute any single-byte upper ASCII
-        for (sub in subs) {
-            result = result.replaceAll("\x" & sub[1], sub[3]);
-        }
-
         // Finally, remove any leftovers
-        result = pattern.matcher(result).replaceAll("");
+        result = nonBasicLatinPattern.matcher(result).replaceAll("");
 
+        return result;
+    }
+
+    /**
+    * Returns a structure of string details
+    * @input An ordinary CFML string value to be processed
+    */
+    public struct function getStringDetails(string input) {
+        var result = {isBasicLatin: true};
+
+        result.utf8Bytes = input.getBytes("UTF-8");
+        result.utf8Hex = binaryEncode(result.utf8Bytes, "hex").split("(?<=\G.{2})");
+
+        result.characterCount = input.length();
+        result.codePoints = input.codePoints().toArray();
+
+        // Seek out any code points greater than Basic Latin
+        // See http://unicode.org/charts/PDF/U0000.pdf
+        for (codePoint in result.codePoints) {
+            if (codePoint > 127) {
+                result.isBasicLatin = false;
+                break;
+            }
+        }
         return result;
     }
 
@@ -126,13 +147,6 @@ component {
         ];
 
         return variables.substitutionMap;
-    }
-
-    private object function getHighBitBytePattern() {
-        if (not structKeyExists(variables, "highBitBytePattern")) {
-            variables.highBitBytePattern = createObject("java", "java.util.regex.Pattern").compile("[^\x00-\x7f]");
-        }
-        return variables.highBitBytePattern;
     }
 
 }

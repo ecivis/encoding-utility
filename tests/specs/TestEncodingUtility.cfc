@@ -11,6 +11,10 @@ component extends="testbox.system.BaseSpec" {
                 var bytes = 0;
                 var input = "";
                 var expected = "";
+                var c = {
+                    n: chr(10),
+                    t: chr(9)
+                };
 
                 expect(encodingUtility.substitute("foo bar boo baz")).toBe("foo bar boo baz");
 
@@ -24,6 +28,13 @@ component extends="testbox.system.BaseSpec" {
                 expected = "Jose";
                 expect(encodingUtility.substitute(input)).toBe(expected);
 
+                input = "Let’s get some 🍺";
+                expected = "Let's get some ";
+                expect(encodingUtility.substitute(input)).toBe(expected);
+
+                input = "Reasons:#c.n##c.t#• One#c.n##c.t#• Two#c.n##c.t#• Three";
+                expected = "Reasons:#c.n##c.t#* One#c.n##c.t#* Two#c.n##c.t#* Three";
+                expect(encodingUtility.substitute(input)).toBe(expected);
             });
 
         });
