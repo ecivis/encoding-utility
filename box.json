@@ -1,10 +1,10 @@
 {
     "name":"Encoding Utility",
     "author":"Joseph lamoree <jlamoree@ecivis.com>",
-    "version":"1.1.0",
+    "version":"1.0.1",
     "slug":"encoding-utility",
     "type":"modules",
-    "location":"ecivis/encoding-utility#v1.0.0",
+    "location":"ecivis/encoding-utility#v1.0.1",
     "homepage":"https://github.com/ecivis/encoding-utility",
     "documentation":"https://github.com/ecivis/encoding-utility",
     "repository":{
@@ -26,7 +26,7 @@
         }
     ],
     "dependencies":{
-        
+
     },
     "devDependencies":{
         "testbox":"^2.4.0+80"

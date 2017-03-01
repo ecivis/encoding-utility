@@ -14,7 +14,7 @@ Install using [CommandBox](https://www.ortussolutions.com/products/commandbox):
 
 ## Usage
 
-Within the component you'd like to make use of the Identity Utlity, have WireBox inject an instance for you from the module's namespace:
+Within the component you'd like to make use of the Encoding Utlity, have WireBox inject an instance for you from the module's namespace:
 ```
 property name="encutil" inject="encodingUtility@EncodingUtility";
 ```
