@@ -1,6 +1,0 @@
-{
-    "openBrowser":false,
-    "app":{
-        "cfengine":"lucee@5.1"
-    }
-}

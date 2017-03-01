@@ -1,7 +1,5 @@
 component {
 
-    processingdirective preservecase=true;
-
     /**
     * This component is thread-safe; feel free to retain/share one instantiation
     */
@@ -10,7 +8,7 @@ component {
     }
 
     /**
-    * Perform reasonable substitutions to convert the input to 7-bit ASCII
+    * Perform reasonable substitutions to convert the input to Basic Latin
     * @input An ordinary CFML string value to be processed
     */
     public string function substitute(string input) {
@@ -40,26 +38,46 @@ component {
     * @input An ordinary CFML string value to be processed
     */
     public struct function getStringDetails(string input) {
-        var result = {isBasicLatin: true};
+        var result = {};
 
-        result.utf8Bytes = input.getBytes("UTF-8");
-        result.utf8Hex = binaryEncode(result.utf8Bytes, "hex").split("(?<=\G.{2})");
+        result["utf8Bytes"] = arguments.input.getBytes("UTF-8");
+        result["utf8Hex"] = binaryEncode(result.utf8Bytes, "hex").split("(?<=\G.{2})");
 
-        result.characterCount = input.length();
-        result.codePoints = input.codePoints().toArray();
-
-        // Seek out any code points greater than Basic Latin
-        // See http://unicode.org/charts/PDF/U0000.pdf
-        for (codePoint in result.codePoints) {
-            if (codePoint > 127) {
-                result.isBasicLatin = false;
-                break;
-            }
-        }
+        result["characterCount"] = arguments.input.length();
+        result["codePoints"] = arguments.input.codePoints().toArray();
+        result["isBasicLatin"] = _isBasicLatin(result["codePoints"]);
         return result;
     }
 
+    /**
+    * Scans a CFML string for any code points above 127
+    * @input An ordinary CFML string value to be scanned
+    */
+    public boolean function isBasicLatin(string input) {
+        return _isBasicLatin(arguments.input.codePoints().toArray());
+    }
 
+
+    /**
+    * Make-believe overloaded function
+    * @codePoints If you already have an array of code points, send 'em here for scanning
+    */
+    private boolean function _isBasicLatin(array codePoints) {
+        var codePoint = 0;
+
+        // Seek out any code points greater than Basic Latin
+        // See http://unicode.org/charts/PDF/U0000.pdf
+        for (codePoint in arguments.codePoints) {
+            if (codePoint > 127) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+    * Returns a collection of code point substitutions that seem least likely to upset everyone
+    */
     private array function getSubstitutionMap() {
         if (structKeyExists(variables, "substitutionMap")) {
             return variables.substitutionMap;

@@ -5,6 +5,7 @@ This is a ColdBox Module to assist in resolving character encoding issues. For e
 ## Requirements
 - Lucee 5+
 - ColdBox 4+
+- Java 8+
 
 ## Installation
 
@@ -18,8 +19,9 @@ Within the component you'd like to make use of the Identity Utlity, have WireBox
 property name="encutil" inject="encodingUtility@EncodingUtility";
 ```
 These are the methods implemented:
-- `containsHighBitBytes(string input)` Tests the input for any bytes with the most significant bit on.
 - `substitute(string input)` Returns the content with reasonable substitutions made. For example, "é" becomes "e".
+- `isBasicLatin(string input)` Tests the input for any code points above 127.
+- `getStringDetails(string input)` Returns a structure of useful information.
 
 ## License
 

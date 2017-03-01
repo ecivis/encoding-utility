@@ -1,0 +1,7 @@
+{
+    "openBrowser":false,
+    "name":"encoding-utility-lucee5",
+    "app":{
+        "cfengine":"lucee@5.1.1+65"
+    }
+}

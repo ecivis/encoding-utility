@@ -1,0 +1,7 @@
+{
+    "openBrowser":false,
+    "name":"encoding-utility-acf11",
+    "app":{
+        "cfengine":"adobe@11.0.11+301867"
+    }
+}
