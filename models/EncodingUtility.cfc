@@ -11,7 +11,7 @@ component {
     * Perform reasonable substitutions to convert the input to Basic Latin
     * @input An ordinary CFML string value to be processed
     */
-    public string function substitute(string input) {
+    public string function substitute(required string input) {
         var result = arguments.input;
         var nonBasicLatinPattern = createObject("java", "java.util.regex.Pattern").compile("[^\x00-\x7f]");
         var subs = getSubstitutionMap();
@@ -37,7 +37,7 @@ component {
     * Returns a structure of string details
     * @input An ordinary CFML string value to be processed
     */
-    public struct function getStringDetails(string input) {
+    public struct function getStringDetails(required string input) {
         var result = {};
 
         result["utf8Bytes"] = arguments.input.getBytes("UTF-8");
@@ -53,7 +53,7 @@ component {
     * Scans a CFML string for any code points above 127
     * @input An ordinary CFML string value to be scanned
     */
-    public boolean function isBasicLatin(string input) {
+    public boolean function isBasicLatin(required string input) {
         return _isBasicLatin(arguments.input.codePoints().toArray());
     }
 
@@ -62,7 +62,7 @@ component {
     * Make-believe overloaded function
     * @codePoints If you already have an array of code points, send 'em here for scanning
     */
-    private boolean function _isBasicLatin(array codePoints) {
+    private boolean function _isBasicLatin(required array codePoints) {
         var codePoint = 0;
 
         // Seek out any code points greater than Basic Latin
@@ -89,10 +89,6 @@ component {
             ["83", "0192", "f"],
             ["84", "201e", ","],
             ["85", "2026", "."],
-            ["86", "2020", ""],
-            ["87", "2021", ""],
-            ["88", "02c6", ""],
-            ["89", "2030", ""],
             ["8a", "0160", "S"],
             ["8b", "2039", "("],
             ["8c", "0152", "O"],
@@ -105,7 +101,6 @@ component {
             ["96", "2013", "-"],
             ["97", "2014", "-"],
             ["98", "02dc", "~"],
-            ["99", "2122", ""],
             ["9a", "0161", "s"],
             ["9b", "203a", ")"],
             ["9c", "0153", "o"],

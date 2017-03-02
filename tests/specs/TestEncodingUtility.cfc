@@ -78,6 +78,12 @@ component extends="testbox.system.BaseSpec" {
                 expect(encodingUtility.isBasicLatin("foo bar")).toBe(true);
                 expect(encodingUtility.isBasicLatin("Microsoft® Skype® for Business™ for Mac®")).toBe(false);
             });
+
+            it("requires input", function () {
+                expect(function () { encodingUtility.substitute(); }).toThrow(type="expression", regex=".*parameter input.*required.*");
+                expect(function () { encodingUtility.isBasicLatin(); }).toThrow(type="expression", regex=".*parameter input.*required.*");
+                expect(function () { encodingUtility.getStringDetails(); }).toThrow(type="expression", regex=".*parameter input.*required.*");
+            });
         });
     };
 
