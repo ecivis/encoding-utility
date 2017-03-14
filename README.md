@@ -20,6 +20,7 @@ property name="encutil" inject="encodingUtility@EncodingUtility";
 ```
 These are the methods implemented:
 - `substitute(string input)` Returns the content with reasonable substitutions made. For example, "é" becomes "e".
+- `substituteForJSON(string input)` Performs substitutions, being conscious of JSON serialization.
 - `isBasicLatin(string input)` Tests the input for any code points above 127.
 - `getStringDetails(string input)` Returns a structure of useful information.
 

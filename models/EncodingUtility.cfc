@@ -34,6 +34,36 @@ component {
     }
 
     /**
+    * Perform substitutions without breaking JSON serialization
+    * @input A string of JSON content to be processed
+    */
+    public string function substituteForJSON(required string input) {
+        var result = arguments.input;
+        var nonBasicLatinPattern = createObject("java", "java.util.regex.Pattern").compile("[^\x00-\x7f]");
+        var subs = getSubstitutionMap();
+        var sub = [];
+
+        // If the input is already Basic Latin, no need to continue
+        if (not nonBasicLatinPattern.matcher(result).find()) {
+            return result;
+        }
+
+        // Replace Unicode code points in the substitution map, being mindful not to break JSON serialization
+        for (sub in subs) {
+            if (sub[3] eq chr(34)) {
+                result = result.replaceAll("\u" & sub[2], "\\" & sub[3]);
+            } else {
+                result = result.replaceAll("\u" & sub[2], sub[3]);
+            }
+        }
+
+        // Finally, remove any leftovers
+        result = nonBasicLatinPattern.matcher(result).replaceAll("");
+
+        return result;
+    }
+
+    /**
     * Returns a structure of string details
     * @input An ordinary CFML string value to be processed
     */

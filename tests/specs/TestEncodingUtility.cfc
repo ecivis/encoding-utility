@@ -43,6 +43,25 @@ component extends="testbox.system.BaseSpec" {
                 expect(encodingUtility.substitute(input)).toBe(expected);
             });
 
+            it("performs substitution without breaking JSON serialization", function () {
+                var content = {
+                    "user": {
+                        "firstName": "Chloé",
+                        "lastName": "Fiçino",
+                        "title": "VP of “New Media” Acquisitions",
+                        "bio": "Thought leader in mobile and digital — synergizing business with post-quantum consciousness."
+                    }
+                };
+                var serialized = serializeJSON(content);
+                var transformed = encodingUtility.substituteForJSON(serialized);
+
+                expect(function () { content = deserializeJSON(transformed); }).notToThrow();
+                expect(content.user.firstName).toBe("Chloe");
+                expect(content.user.lastName).toBe("Ficino");
+                expect(content.user.title).toBe("VP of ""New Media"" Acquisitions");
+                expect(content.user.bio).toBe("Thought leader in mobile and digital - synergizing business with post-quantum consciousness.");
+            });
+
             it("returns the correct string details", function () {
                 var stringDetails = {};
                 var bytes = 0;
